@@ -1,0 +1,17 @@
+[project]
+name = "pyiceberg-hdfs-native"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    'hdfs-native',
+    "pyiceberg>=0.9.1",
+]
+
+[build-system]
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["pyiceberg_hdfs_native"]
