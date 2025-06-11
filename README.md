@@ -32,3 +32,16 @@ Now `files` command should work:
 ```
 pyiceberg files db.table
 ```
+
+## Read iceberg table with polars
+
+```bash
+uv run --with polars --with pyarrow --with pyiceberg-hdfs-native python
+```
+
+```python
+>>> table_path = 'hdfs://datalake/path/to/manifest.json'
+>>> storage_options = {'py-io-impl': 'pyiceberg_hdfs_native.HdfsFileIO'}
+>>> import polars as pl
+>>> pl.scan_iceberg(table_path, storage_options=storage_options).collect()
+```
