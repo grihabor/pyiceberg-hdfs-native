@@ -11,7 +11,7 @@ Install with uv:
 uv tool install --with pyiceberg-hdfs-native pyiceberg
 ```
 
-Configure pyiceberg:
+Configure pyiceberg via `~/.pyiceberg.yaml`:
 
 ```bash
   default:
@@ -38,6 +38,14 @@ pyiceberg files db.table
 ```bash
 uv run --with polars --with pyarrow --with pyiceberg-hdfs-native python
 ```
+
+```python
+>>> from pyiceberg.catalog import load_catalog
+>>> catalog = load_catalog(name='default')  # will read config from ~/.pyiceberg.yaml
+>>> catalog.load_table('db.tbl').to_polars()
+```
+
+Or if you know the manifest path:
 
 ```python
 >>> table_path = 'hdfs://datalake/path/to/manifest.json'
