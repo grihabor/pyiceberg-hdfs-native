@@ -48,7 +48,7 @@ def read_table(table_name):
     table = catalog.load_table(table_name)
     metadata_location = table.metadata_location
     storage_options = {'py-io-impl': 'pyiceberg_hdfs_native.HdfsFileIO'}
-    return pl.scan_iceberg(metadata_location, storage_options=storage_options, override_reader='pyiceberg')
+    return pl.scan_iceberg(metadata_location, storage_options=storage_options, reader_override='pyiceberg')
 
 read_table('db.tbl').head().collect()
 ```
