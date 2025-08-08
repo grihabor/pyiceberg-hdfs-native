@@ -40,16 +40,15 @@ uv run --with polars --with pyarrow --with pyiceberg-hdfs-native python
 ```
 
 ```python
->>> from pyiceberg.catalog import load_catalog
->>> catalog = load_catalog(name='default')  # will read config from ~/.pyiceberg.yaml
->>> catalog.load_table('db.tbl').to_polars()
-```
+from pyiceberg.catalog import load_catalog
+import polars as pl
 
-Or if you know the manifest path:
+def read_table(table_name):
+    catalog = load_catalog(name='default')  # will read config from ~/.pyiceberg.yaml
+    table = catalog.load_table(table_name)
+    metadata_location = table.metadata_location
+    storage_options = {'py-io-impl': 'pyiceberg_hdfs_native.HdfsFileIO'}
+    return pl.scan_iceberg(metadata_location, storage_options=storage_options, override_reader='pyiceberg')
 
-```python
->>> table_path = 'hdfs://datalake/path/to/manifest.json'
->>> storage_options = {'py-io-impl': 'pyiceberg_hdfs_native.HdfsFileIO'}
->>> import polars as pl
->>> pl.scan_iceberg(table_path, storage_options=storage_options).collect()
+read_table('db.tbl').head().collect()
 ```
