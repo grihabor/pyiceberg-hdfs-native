@@ -1,16 +1,9 @@
 from functools import lru_cache
-from typing import Callable, ClassVar
+from typing import Callable
 from fsspec import AbstractFileSystem
-from hdfs_native import fsspec
+import hdfs_native.fsspec
 from pyiceberg.io.fsspec import FsspecFileIO
 from pyiceberg.typedef import Properties
-
-
-_HDFS_SCHEME = "hdfs"
-
-
-class HdfsFileSystem(fsspec.HdfsFileSystem):
-    protocol: ClassVar[str] = _HDFS_SCHEME
 
 
 class HdfsFileIO(FsspecFileIO):
@@ -21,4 +14,4 @@ class HdfsFileIO(FsspecFileIO):
     def _get_fs(self, scheme: str) -> AbstractFileSystem:
         if scheme != "hdfs":
             raise ValueError(f"Unsupported scheme: {scheme}")
-        return HdfsFileSystem()
+        return hdfs_native.fsspec.HdfsFileSystem()
